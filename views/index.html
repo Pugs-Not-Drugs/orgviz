@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html>
   <head>
     <meta charset="UTF-8">
@@ -32,10 +33,8 @@
   <body>
       <div class="left-hand-panel">
         Organisation
-        <form>
-          <input type="text" id="orgInput"></input>
-          <button id="crawlBtn">Go</button>
-        </form>
+        <input type="text" id="orgInput"></input>
+        <button id="crawlBtn">Go</button>
       </div>
       <div class="main-panel">
           <div id="radar" style="width: 1024px; height: 800px"></div>
@@ -83,3 +82,10 @@ radar('#radar',
 </script>
 
 </html>
+<script>window.$ = window.jQuery = require('./../scripts/jquery-2.2.2.js');</script>
+<script>
+const crawler = require('./../modules/crawler');
+$(crawlBtn).click(function () {
+  crawler.crawl();
+});
+</script>
