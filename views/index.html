@@ -4,8 +4,12 @@
   <head>
     <meta charset="UTF-8">
     <title>Hello World!</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"/>
     <link type="text/css" rel="stylesheet" href="css/photon.css" />
+    <link type="text/css" rel="stylesheet" href="css/main.css"/>
+    <link type="text/css" rel="stylesheet" href="css/button.css" />
     <link type="text/css" rel="stylesheet" href="css/radar.css" />
+    <link type="text/css" rel="stylesheet" href="css/menu.css" />
     <link href="../node_modules/vis/dist/vis.css" rel="stylesheet" type="text/css" />
 
     <script type="text/javascript" src="../node_modules/vis/dist/vis.js"></script>
@@ -27,12 +31,27 @@
       <div class="window-content">
         <div class="pane-group">
           <div class="pane-mini sidebar">
-              <button>Hello</button>
-          </div>
-          <div class="pane-sm sidebar">
-              Organisation
-              <input type="text" id="orgInput"></input>
-              <button id="crawlBtn">Go</button>
+          <nav class="main-menu">
+            <ul>
+              <li>
+                <a href="#">
+                <i class="fa fa-home fa-2x"></i>
+                        <span class="nav-text">
+                            Dashboard
+                        </span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+          <div class="pane sidebar">
+            <div class="group">
+             <input id="orgInput" type="text" required>
+             <span class="highlight"></span>
+             <span class="bar"></span>
+             <label>Organisation</label>
+           </div>
+              <button id="crawlBtn" class="button search">Find</button>
           </div>
           <div class="pane">
               <div id="radar" style="width: 1024px; height: 800px"></div>
