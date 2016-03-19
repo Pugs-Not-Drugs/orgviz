@@ -16,21 +16,22 @@ function entry(start, end, quadrant, position, position_angle, direction, direct
 		direction_angle: direction_angle
 	};
 }
-    
+
 function show_radar(data) {
+    debugger
     var highest = 0,
         radarData = [],
         key,
         entry,
         i,
         radarEntry;
-        
+
     // Get highest count. Our position is normalized based on this
     for (key in data) {
         entry = data[key];
         highest = Math.max(highest, entry.count);
     }
-    
+
     i = 0;
     // Loop through all the entries
     for (key in data) {
@@ -46,7 +47,7 @@ function show_radar(data) {
         };
 
         radarData.push(radarEntry);
-        i++; 
+        i++;
     }
 
     // Render the radar
@@ -59,3 +60,5 @@ function show_radar(data) {
         data: radarData
     });
 }
+
+module.exports = {showRadar: show_radar};
