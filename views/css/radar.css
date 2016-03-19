@@ -1,0 +1,19 @@
+/* Styles for the radar view */
+svg, ul {
+    float: left;
+}
+svg text.name { font-family: Arial, Sans-serif; font-size: 12px; opacity: 0.5 }
+svg line.quadrant { stroke-width: 2px;}
+svg circle.horizon { stroke: #999; stroke-width: 2px; stroke-opacity: 0; fill: none;}
+svg line.direction { stroke: black; stroke-width: 5px; marker-end: url(#arrow); opacity: 0.2;}
+/*svg #arrow { fill: #000; }*/
+svg #arrow { fill: transparent; }
+svg path.quadrant { fill-opacity: 0.5;}
+svg text.quadrant {
+    font-family: Arial, Sans-serif;
+    font-weight: bold;
+    color: white;
+    opacity: 0.3;
+    font-size: 40px;
+    text-align: right;
+}
