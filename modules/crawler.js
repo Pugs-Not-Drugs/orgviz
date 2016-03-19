@@ -1,7 +1,7 @@
 var github = require('octonode');
 var radar = require('../views/radar-impl');
 
-var orgData = null;
+var client = github.client('b4d4ee29cbb858da8cb54a3ca80ebb5bc119f2c3');
 
 function findByLanguage(language, data){
     for(var langObj in data){
@@ -13,7 +13,6 @@ function findByLanguage(language, data){
 }
 
 function crawlOrg(orgName, callback) {
-  var client = github.client('b4d4ee29cbb858da8cb54a3ca80ebb5bc119f2c3');
 
   var ghOrg = client.org(orgName);
   var data = [];
@@ -37,10 +36,20 @@ function crawlOrg(orgName, callback) {
   });
 }
 
+function crawlMembers(orgName, callback) {
+  var ghOrg = client.org(orgName);
+  var data = [];
+  
+  callback(data);
+  });
+}
+
 module.exports = {
   render: function(orgName) {
-      crawlOrg(orgName, function(data) {
-        radar.showRadar(data);
-      });
+      crawlOrg(orgName, function(orgData) {
+        crawlMembers(orgName, function(memberData){
+          radar.showRadar(orgData);
+        })
+    });
   }
 };
