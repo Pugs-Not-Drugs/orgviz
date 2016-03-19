@@ -87,6 +87,35 @@ radar('#radar',
       }
 		]
 	});
+    
+    var example = {
+        "data": [
+            { "language":"C#" , "count":500 },
+            { "language":"Python" , "count":  400 },
+            { "language":"Ruby on Rails" , "count": 300 }
+        ]};
+    
+    process_data(example.data);
+    
+    function process_data(data) {
+        // Get highest count
+        var highest = 0,
+            key,
+            entry;
+            
+        for (key in data) {
+            entry = data[key];
+            highest = Math.max(highest, entry.count);
+        }
+        
+        console.log('Highest: ' + highest);
+        for (key in data) {
+            entry = data[key];
+            entry.position = 1 - 0.95 * entry.count / highest
+        }
+        
+        
+    }
 </script>
 
 </html>
