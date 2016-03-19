@@ -11,18 +11,27 @@
     <link type="text/css" rel="stylesheet" href="css/radar.css" />
     <link type="text/css" rel="stylesheet" href="css/menu.css" />
     <link href="../node_modules/vis/dist/vis.css" rel="stylesheet" type="text/css" />
+    <link type="text/css" rel="stylesheet" href="css/leaflet.css" />
 
     <script type="text/javascript" src="../node_modules/vis/dist/vis.js"></script>
     <script src="d3.js"></script>
     <script src="radar.js"></script>
     <script src="radar-impl.js"></script>
+    <script src="map.js"></script>
     <script src="menu.js"></script>
+    
+    <script src="./leaflet.js"></script>
 
-    <style type="text/css">
+    <style>
       #networkgraph {
         width: 400px;
         height: 400px;
         border: 1px solid lightgray;
+      }
+      
+      #themap {
+        width: 600px;
+        height: 600px;
       }
     </style>
   </head>
@@ -63,6 +72,7 @@
           </div>
           <div class="pane">
               <div id="radar" style="width: 1024px; height: 800px"></div>
+              <div id="themap"></div>
               <div id="networkgraph"></div>
           </div>
         </div>
@@ -140,4 +150,12 @@ var options = {
           brokenImage: '../images/test_image.png'}
 };
 var network = new vis.Network(container, data, options);
+</script>
+
+<script>    
+    var map = L.map('themap').setView([51.505, -0.09], 10);
+
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
 </script>
