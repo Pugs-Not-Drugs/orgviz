@@ -18,7 +18,6 @@ function crawlOrg(orgName, callback) {
   var data = [];
 
   ghOrg.repos(function(err, body){
-    console.log(err);
     for(var repo in body) {
       var currentLanguage = body[repo].language;
       if(currentLanguage === null) continue;
