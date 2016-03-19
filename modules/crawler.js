@@ -37,12 +37,28 @@ function crawlOrg(orgName, callback) {
 }
 
 function crawlReposForCollab(orgName) {
-  var membersNames = [];
+  var data = [];
+  var repoNames = [];
   client.org(orgName).repos(function(err, repos){
 
   for(var repoIndex in repos) {
-      console.log(repos[repoIndex].name);
+      repoNames.push(repos[repoIndex].name);
     }
+
+  for(var nameIndex in repoNames) {
+    var ok = repoNames[nameIndex];
+    var repo = client.repo(orgName + '/' + ok);
+    repo.contributors(function(err, people){
+      var nameList = [];
+      for(var personIndex in people) {
+        nameList.push(people[personIndex].login)
+      }
+      data.push({repository: ok, contributors: nameList})
+      console.log(data);
+    })
+  }
+
+
   });
 }
 
