@@ -187,12 +187,6 @@ function radar(id, data) {
         d3.select(this).select("text.name").style({opacity:'0.1'});
       })
 
-    blips.append('line')
-      .attr('class','direction')
-      .attr('x1', 0).attr('y1', 0)
-      .attr('x2', function(d) { return d.dx; })
-      .attr('y2', function(d) { return d.dy; });
-
     blips.append('circle')
       .attr('r', '7px')
     ;
