@@ -39,9 +39,8 @@ function crawlOrg(orgName, callback) {
 function crawlMembers(orgName, callback) {
   var ghOrg = client.org(orgName);
   var data = [];
-  
+  console.log(ghOrg);
   callback(data);
-  });
 }
 
 module.exports = {
