@@ -13,7 +13,7 @@
     svg, ul {
         float: left;
     }
-    svg text.name { font-family: Arial, Sans-serif; font-size: 12px; opacity: 0.1 }
+    svg text.name { font-family: Arial, Sans-serif; font-size: 12px; opacity: 0.5 }
     svg line.quadrant { stroke-width: 2px;}
     svg circle.horizon { stroke: #999; stroke-width: 2px; stroke-opacity: 0; fill: none;}
     svg line.direction { stroke: black; stroke-width: 5px; marker-end: url(#arrow); opacity: 0.2;}
@@ -61,60 +61,58 @@ function entry(start, end, quadrant, position, position_angle, direction, direct
 		direction_angle: direction_angle
 	};
 }
-radar('#radar',
-	// radar data
-	{
-		horizons: [ 'discover', 'assess', 'learn', 'use'],
-		quadrants: [ 'languages'],
-		width: 600,
-		height: 600,
-		data: [
-			{
-				name: 'd3',
-				description: 'The d3 library for producing visualisation and data driven documents',
-				links: ['http://d3js.org'],
-        position: 0.8,
-        angle: 0.5,
-        quadrant: 'languages'
-			},
-      {
-          name: 'Ruby on Rails',
-          description: 'Blah blah blah.',
-          links: ['http://rubyonrails.org/'],
-          position: 0.7,
-          angle: 0.7,
-          quadrant: 'languages'
-      }
-		]
-	});
     
     var example = {
-        "data": [
-            { "language":"C#" , "count":500 },
-            { "language":"Python" , "count":  400 },
-            { "language":"Ruby on Rails" , "count": 300 }
+        'data': [
+            { 'language':'C#' , 'count': 500 },
+            { 'language':'Python' , 'count':  400 },
+            { 'language':'Ruby on Rails' , 'count': 300 },
+            { 'language': 'Visual Basic', count: 20 }
         ]};
     
     process_data(example.data);
     
     function process_data(data) {
-        // Get highest count
         var highest = 0,
+            radarData = [],
             key,
-            entry;
+            entry,
+            i,
+            radarEntry;
             
+        // Get highest count. Our position is normalized based on this
         for (key in data) {
             entry = data[key];
             highest = Math.max(highest, entry.count);
         }
         
-        console.log('Highest: ' + highest);
+        i = 0;
+        // Loop through all the entries
         for (key in data) {
-            entry = data[key];
-            entry.position = 1 - 0.95 * entry.count / highest
+            entry = data[key];      // e.g. {'language': 'C++', 'count': 800 }
+            radarEntry = {
+                'name': entry.language,
+                'description': 'Some interesting text here.',
+                'links': [ 'http://an.interesting-site.com' ],
+                'position': 1 - 0.95 * entry.count / highest,
+                'angle': i / (data.length),
+                'quadrant': 'languages',
+                'count': entry.count
+            };
+
+            radarData.push(radarEntry);
+            i++; 
         }
-        
-        
+
+        // Render the radar
+        radar('#radar',
+	    {
+		    horizons: [ 'discover', 'assess', 'learn', 'use'],
+            quadrants: [ 'languages'],
+            width: 600,
+            height: 600,
+            data: radarData
+        });
     }
 </script>
 
