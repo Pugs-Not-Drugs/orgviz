@@ -13,15 +13,17 @@
     <link type="text/css" rel="stylesheet" href="css/search.css" />
     <link href="../node_modules/vis/dist/vis.css" rel="stylesheet" type="text/css" />
     <link type="text/css" rel="stylesheet" href="css/leaflet.css" />
-
+    <!--<link type="text/css" rel="stylesheet" href="css/MarkerCluster.css">
+    <link type="text/css" rel="stylesheet" href="css/MarkerCluster.Default.css">-->
+    
     <script type="text/javascript" src="../node_modules/vis/dist/vis.js"></script>
     <script src="d3.js"></script>
     <script src="radar.js"></script>
     <script src="radar-impl.js"></script>
-    <script src="map.js"></script>
     <script src="menu.js"></script>
 
     <script src="./leaflet.js"></script>
+    <!--<script src="mapping/leaflet.markercluster.js">-->
 
     <style>
       #networkgraph {
@@ -117,6 +119,10 @@ $('.navbutton').click(function(e) {
 
     $(this.hash).show();
     e.preventDefault();
+
+    if (this.hash == "#themap") {
+        ensureMapLoaded();
+    }
 })
 </script>
 <script>
@@ -200,14 +206,6 @@ var network = new vis.Network(container, data, options);
 </script>
 
 <script>
-    var map = L.map('themap').setView([51.505, -0.09], 10);
-
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-</script>
-
-<script>
 (function() {
 
   // Fake JSON data
@@ -256,4 +254,47 @@ var network = new vis.Network(container, data, options);
 
 })();
 
+</script>
+<script>
+    var userLocations = {
+        "locations": [ 
+            { "login": "Bob", "location": "Nottingham"}, 
+            { "login": "Eric", "location": "Derby"}, 
+            { "login": "Anne", "location": "Aberdeen"}
+        ]
+    };
+    
+    var map;
+
+    function getRandomLocation() {
+        var sw = this.map.getBounds().getSouthWest();
+        var ne = this.map.getBounds().getNorthEast();
+
+        var lat = Math.random() * (ne.lat - sw.lat) + sw.lat;
+        var lng = Math.random() * (ne.lng - sw.lng) + sw.lng;
+            
+        return [lat, lng];
+    }
+    
+    function ensureMapLoaded() {
+        if (!map) {
+            this.map = L.map('themap').setView([52.954783,-1.158109], 8);
+        
+            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(this.map);
+    
+//     // var markers = L.markerClusterGroup();    
+
+            for (var i = 0; i < 50; i++) {
+                var marker = L.marker(getRandomLocation());
+                marker.bindPopup('Marker: ' + i);
+                marker.addTo(map);
+        //        markers.addLayer(L.marker(getRandomLocation(map)));
+            }
+    
+//     // map.addLayer(markers);
+       
+        }    
+    }
 </script>
