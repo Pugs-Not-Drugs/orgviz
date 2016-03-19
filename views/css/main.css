@@ -1,0 +1,25 @@
+/* Shared styles and theme */
+
+body {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+.left-hand-panel {
+    position: absolute;
+    background-color: #1e1e1e;
+    color: #6c6c6c;
+    width: 200px;
+    height: 100%;
+    padding-left: 4px;
+}
+
+.main-panel {
+    position: absolute;
+    background-color: #c1c1c1;
+    left: 204px;
+    height: 100%;
+    right: 0px;
+    border-left: 1px solid #444;
+}
