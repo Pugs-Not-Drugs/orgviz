@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <title>Hello World!</title>
-    <link type="text/css" rel="stylesheet" href="css/main.css" />
+    <link type="text/css" rel="stylesheet" href="css/photon.css" />
     <link type="text/css" rel="stylesheet" href="css/radar.css" />
     <link href="../node_modules/vis/dist/vis.css" rel="stylesheet" type="text/css" />
 
@@ -12,6 +12,7 @@
     <script src="d3.js"></script>
     <script src="radar.js"></script>
     <script src="radar-impl.js"></script>
+    <script src="menu.js"></script>
 
     <style type="text/css">
       #basicnetwork {
@@ -22,15 +23,23 @@
     </style>
   </head>
   <body>
-      <div class="left-hand-panel">
-        Organisation
-        <input type="text" id="orgInput"></input>
-        <button id="crawlBtn">Go</button>
+    <div class="window">
+      <div class="window-content">
+        <div class="pane-group">
+          <div class="pane-mini sidebar">
+              <button>Hello</button>
+          </div>
+          <div class="pane-sm sidebar">
+              Organisation
+              <input type="text" id="orgInput"></input>
+              <button id="crawlBtn">Go</button>
+          </div>
+          <div class="pane">
+              <div id="radar" style="width: 1024px; height: 800px"></div>
+          </div>
+        </div>
       </div>
-      <div class="main-panel">
-          <div id="radar" style="width: 1024px; height: 800px"></div>
-          <div id="basicnetwork"></div>
-      </div>
+    </div>
   </body>
   <script type="text/javascript">
     // create an array with nodes
