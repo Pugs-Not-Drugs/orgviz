@@ -17,7 +17,8 @@
     svg line.quadrant { stroke-width: 2px;} 
     svg circle.horizon { stroke: #999; stroke-width: 2px; stroke-opacity: 0; fill: none;}
     svg line.direction { stroke: black; stroke-width: 5px; marker-end: url(#arrow); opacity: 0.2;}
-    svg #arrow { fill: black; }
+    /*svg #arrow { fill: #000; }*/
+    svg #arrow { fill: transparent; }
     svg path.quadrant { fill-opacity: 0.5;}
     svg text.quadrant { 
         font-family: Arial, Sans-serif; 
@@ -76,7 +77,18 @@ radar('#radar',
 					entry(new Date(2013,1,29),new Date(2013,9,29),'frameworks', 0.8, 0.5, 0.6, 0.5),
 					entry(new Date(2013,9,29),null,'frameworks', 0.6, 0.5, 0.2, 0.5)
 				]
-			}
+			},
+            {
+                name: 'Ruby on Rails',
+                description: 'Blah blah blah.',
+                links: ['http://rubyonrails.org/'],
+                history: [
+                    entry(null, null, 'frameworks', 0.7, 0.7, 0.7, 0.7)
+                    // entry(new Date(2014,3,19), new Date(2015,3,19), 'frameworks', 0.7, 0.5, 0.3, 0.5),
+                    // entry(new Date(2014,3,19), null, 'frameworks', 0.7, 0.5, 0.3, 0.5)
+//                    entry(new Date(2015,3,19), null,'frameworks', 0.3, 0.8, 0.4, 0.5)
+                ]
+            }
 		]
 	});
 </script>
