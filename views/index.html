@@ -15,7 +15,7 @@
     <link type="text/css" rel="stylesheet" href="css/leaflet.css" />
     <!--<link type="text/css" rel="stylesheet" href="css/MarkerCluster.css">
     <link type="text/css" rel="stylesheet" href="css/MarkerCluster.Default.css">-->
-    
+
     <script type="text/javascript" src="../node_modules/vis/dist/vis.js"></script>
     <script src="d3.js"></script>
     <script src="radar.js"></script>
@@ -75,7 +75,7 @@
                 </a>
               </li>
               <li>
-                <a href="#influenceBubble" class="navbutton">
+                <a href="#influencebubble" class="navbutton">
                 <i class="fa fa-circle-o fa-2x"></i>
                         <span class="nav-text">
                             Influence
@@ -122,6 +122,8 @@ $('.navbutton').click(function(e) {
 
     if (this.hash == "#themap") {
         ensureMapLoaded();
+    } else if (this.hash == "#influencebubble") {
+        createBubble();
     }
 })
 </script>
@@ -206,14 +208,20 @@ var network = new vis.Network(container, data, options);
 </script>
 
 <script>
-(function() {
 
-  // Fake JSON data
-  var json = {"countries_msg_vol": {
-    "CA": 170, "US": 393, "BB": 12, "CU": 9, "BR": 89, "MX": 192, "PY": 32, "UY": 9, "VE": 25, "BG": 42, "CZ": 12, "HU": 7, "RU": 184, "FI": 42, "GB": 162, "IT": 87, "ES": 65, "FR": 42, "DE": 102, "NL": 12, "CN": 92, "JP": 65, "KR": 87, "TW": 9, "IN": 98, "SG": 32, "ID": 4, "MY": 7, "VN": 8, "AU": 129, "NZ": 65, "GU": 11, "EG": 18, "LY": 4, "ZA": 76, "A1": 2, "Other": 254
-  }};
+var bubbleLoaded = false;
 
-  // D3 Bubble Chart
+// Fake JSON data
+var json = {"countries_msg_vol": {
+  "CA": 170, "US": 393, "BB": 12, "CU": 9, "BR": 89, "MX": 192, "PY": 32, "UY": 9, "VE": 25, "BG": 42, "CZ": 12, "HU": 7, "RU": 184, "FI": 42, "GB": 162, "IT": 87, "ES": 65, "FR": 42, "DE": 102, "NL": 12, "CN": 92, "JP": 65, "KR": 87, "TW": 9, "IN": 98, "SG": 32, "ID": 4, "MY": 7, "VN": 8, "AU": 129, "NZ": 65, "GU": 11, "EG": 18, "LY": 4, "ZA": 76, "A1": 2, "Other": 254
+}};
+
+// D3 Bubble Chart
+function createBubble() {
+
+    if (bubbleLoaded) {
+        return;
+    }
 
   var diameter = 600;
 
@@ -251,19 +259,20 @@ var network = new vis.Network(container, data, options);
     }
     return {children: newDataSet};
   }
+  bubbleLoaded = true;
+}
 
-})();
 
 </script>
 <script>
     var userLocations = {
-        "locations": [ 
-            { "login": "Bob", "location": "Nottingham"}, 
-            { "login": "Eric", "location": "Derby"}, 
+        "locations": [
+            { "login": "Bob", "location": "Nottingham"},
+            { "login": "Eric", "location": "Derby"},
             { "login": "Anne", "location": "Aberdeen"}
         ]
     };
-    
+
     var map;
 
     function getRandomLocation() {
@@ -272,19 +281,19 @@ var network = new vis.Network(container, data, options);
 
         var lat = Math.random() * (ne.lat - sw.lat) + sw.lat;
         var lng = Math.random() * (ne.lng - sw.lng) + sw.lng;
-            
+
         return [lat, lng];
     }
-    
+
     function ensureMapLoaded() {
         if (!map) {
             this.map = L.map('themap').setView([52.954783,-1.158109], 8);
-        
+
             L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(this.map);
-    
-//     // var markers = L.markerClusterGroup();    
+
+//     // var markers = L.markerClusterGroup();
 
             for (var i = 0; i < 50; i++) {
                 var marker = L.marker(getRandomLocation());
@@ -292,9 +301,9 @@ var network = new vis.Network(container, data, options);
                 marker.addTo(map);
         //        markers.addLayer(L.marker(getRandomLocation(map)));
             }
-    
+
 //     // map.addLayer(markers);
-       
-        }    
+
+        }
     }
 </script>
