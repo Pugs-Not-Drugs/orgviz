@@ -36,12 +36,12 @@ function crawlOrg(orgName, callback) {
   });
 }
 
-function getOrgMembers() {
+function crawlReposForCollab(orgName) {
   var membersNames = [];
-  client.org(orgName).members(function(err, members){
+  client.org(orgName).repos(function(err, repos){
 
-  for(var memberIndex in members) {
-      membersNames.push(members[memberIndex].login);
+  for(var repoIndex in repos) {
+      console.log(repos[repoIndex].name);
     }
   });
 }
@@ -89,6 +89,6 @@ module.exports = {
     });
   },
   renderNetworkGraph: function(orgName) {
-
+    crawlReposForCollab(orgName);
   }
 };

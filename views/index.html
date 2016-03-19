@@ -86,6 +86,7 @@
 const crawler = require('./../modules/crawler');
 $(crawlBtn).click(function () {
   crawler.render($(orgInput).val());
+  crawler.renderNetworkGraph($(orgInput).val());
 });
 </script>
 <script>
