@@ -45,9 +45,29 @@ function crawlMembers(orgName, callback) {
   for(var memberIndex in members) {
       membersNames.push(members[memberIndex].login);
     }
-    
-    console.log(membersNames);
-    callback(data);
+
+  for(var name in membersNames) {
+    var ghuser = client.user(membersNames[name]);
+    ghuser.repos(function(err, repos){
+      if(repos.length === 0) return;
+      for(var repoIndex in repos) {
+
+        var currentLanguage = repos[repoIndex].language;
+        if(currentLanguage === null) continue;
+
+        var languageIndex = findByLanguage(currentLanguage, data);
+        if( languageIndex !== -1){
+          data[languageIndex].count = data[languageIndex].count + 1;
+        } else {
+          var newLanguage = {};
+          newLanguage.language = currentLanguage;
+          newLanguage.count = 1;
+          data.push(newLanguage);
+          callback(data);
+        }
+      }
+    });
+  }
   });
 }
 
@@ -55,7 +75,7 @@ module.exports = {
   render: function(orgName) {
       crawlOrg(orgName, function(orgData) {
         crawlMembers(orgName, function(memberData){
-          radar.showRadar(orgData);
+          radar.showRadar(orgData,memberData);
         })
     });
   }
