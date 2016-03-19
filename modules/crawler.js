@@ -54,7 +54,6 @@ function crawlReposForCollab(orgName) {
         nameList.push(people[personIndex].login)
       }
       data.push({repository: ok, contributors: nameList})
-      console.log(data);
     })
   }
 

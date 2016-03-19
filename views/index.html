@@ -88,9 +88,11 @@
 <script>window.$ = window.jQuery = require('./../scripts/jquery-2.2.2.js');</script>
 <script>
 const crawler = require('./../modules/crawler');
+const influence = require('./../modules/influence');
 $(crawlBtn).click(function () {
   crawler.render($(orgInput).val());
   crawler.renderNetworkGraph($(orgInput).val());
+  influence.render($(orgInput).val());
 });
 
 $('.navbutton').click(function(e) {
