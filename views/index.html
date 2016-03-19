@@ -10,6 +10,7 @@
     <link type="text/css" rel="stylesheet" href="css/button.css" />
     <link type="text/css" rel="stylesheet" href="css/radar.css" />
     <link type="text/css" rel="stylesheet" href="css/menu.css" />
+    <link type="text/css" rel="stylesheet" href="css/search.css" />
     <link href="../node_modules/vis/dist/vis.css" rel="stylesheet" type="text/css" />
     <link type="text/css" rel="stylesheet" href="css/leaflet.css" />
 
@@ -44,7 +45,7 @@
             <ul>
               <li>
                 <a href="#radar" class="navbutton">
-                <i class="fa fa-spinner fa-2x"></i>
+                <i class="fa fa-bullseye fa-2x"></i>
                         <span class="nav-text">
                             Radar
                         </span>
@@ -58,19 +59,22 @@
                         </span>
                 </a>
               </li>
+              <li>
+                <a href="#themap" class="navbutton">
+                <i class="fa fa-map fa-2x"></i>
+                        <span class="nav-text">
+                            Locality
+                        </span>
+                </a>
+              </li>
             </ul>
           </nav>
         </div>
-          <div class="pane sidebar">
-            <div class="group">
-             <input id="orgInput" type="text" required>
-             <span class="highlight"></span>
-             <span class="bar"></span>
-             <label>Organisation</label>
-           </div>
-              <button id="crawlBtn" class="button search">Find</button>
-          </div>
           <div class="pane">
+            <div class="sw">
+                <input id="orgInput"  class="search" placeholder="Github Organisation.." />
+                <button  id="crawlBtn" class="go"><span class="entypo-search"></span></button>
+            </div>
               <div id="radar" class="navItem" style="width: 1024px; height: 800px"></div>
               <div id="themap" class="navItem" style="display:none"></div>
               <div id="networkgraph" class="navItem" style="display:none"></div>
@@ -92,7 +96,6 @@ $(crawlBtn).click(function () {
 $('.navbutton').click(function(e) {
   console.log("hello");
     $('.navItem:visible').each(function() {
-      console.log("hello");
       $(this).hide();
     });
 
