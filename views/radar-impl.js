@@ -17,46 +17,64 @@ function entry(start, end, quadrant, position, position_angle, direction, direct
 	};
 }
 
-function show_radar(data) {
+function append_radar_quadrant(data, radar_data, quadrant_name) {
     var highest = 0,
-        radarData = [],
+        i = 0,
+        radar_entry,
         key,
-        entry,
-        i,
-        radarEntry;
+        entry;
 
-    // Get highest count. Our position is normalized based on this
+    // Get highest count. Distance from graph centre is normalized
+    // based on this
     for (key in data) {
         entry = data[key];
         highest = Math.max(highest, entry.count);
     }
 
-    i = 0;
     // Loop through all the entries
     for (key in data) {
         entry = data[key];      // e.g. {'language': 'C++', 'count': 800 }
-        radarEntry = {
+        radar_entry = {
             'name': entry.language,
             'description': 'Some interesting text here.',
             'links': [ 'http://an.interesting-site.com' ],
             'position': 1 - 0.95 * entry.count / highest,
             'angle': i / (data.length),
-            'quadrant': 'languages',
+            'quadrant': quadrant_name,
             'count': entry.count
         };
 
-        radarData.push(radarEntry);
+        // Add new entry to existing radar data array
+        radar_data.push(radar_entry);
         i++;
     }
+}
 
+function show_radar(org_data, member_data) {
+    var radar_data = [],
+        key,
+        entry,
+        i,
+        radar_entry,
+        quadrant_names = ['current skills'];
+        
+    append_radar_quadrant(org_data, radar_data, 'current skills');
+    
+    if (member_data) {
+        append_radar_quadrant(member_data, radar_data, 'potential');
+        quadrant_names.push('potential');
+    }
+    
     // Render the radar
+    document.getElementById('radar').innerHTML = '';
+
     radar('#radar',
     {
         horizons: [ 'discover', 'assess', 'learn', 'use'],
-        quadrants: [ 'languages'],
+        quadrants: quadrant_names,
         width: 600,
         height: 600,
-        data: radarData
+        data: radar_data
     });
 }
 
