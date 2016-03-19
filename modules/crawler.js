@@ -1,41 +1,46 @@
 var github = require('octonode');
 var radar = require('../views/radar-impl');
 
-module.exports = {
-  crawl: function (orgName) {
-    var client = github.client('b4d4ee29cbb858da8cb54a3ca80ebb5bc119f2c3');
+var orgData = null;
 
-    var ghOrg = client.org(orgName);
-    var data = [];
-
-    function findByLanguage(language, data){
-        for(var langObj in data){
-            if(data[langObj].language === language){
-              return langObj;
-            }
+function findByLanguage(language, data){
+    for(var langObj in data){
+        if(data[langObj].language === language){
+          return langObj;
         }
-        return -1;
     }
+    return -1;
+}
 
-    ghOrg.repos(function(err, body){
-      for(var repo in body) {
-        var currentLanguage = body[repo].language;
-        if(currentLanguage === null) continue;
+function crawlOrg(orgName, callback) {
+  var client = github.client('b4d4ee29cbb858da8cb54a3ca80ebb5bc119f2c3');
 
-        var languageIndex = findByLanguage(currentLanguage, data);
-        if( languageIndex !== -1){
-          data[languageIndex].count = data[languageIndex].count + 1;
-        } else {
-          var newLanguage = {};
-          newLanguage.language = currentLanguage;
-          newLanguage.count = 1;
-          data.push(newLanguage);
-        }
+  var ghOrg = client.org(orgName);
+  var data = [];
+
+  ghOrg.repos(function(err, body){
+    for(var repo in body) {
+      var currentLanguage = body[repo].language;
+      if(currentLanguage === null) continue;
+
+      var languageIndex = findByLanguage(currentLanguage, data);
+      if( languageIndex !== -1){
+        data[languageIndex].count = data[languageIndex].count + 1;
+      } else {
+        var newLanguage = {};
+        newLanguage.language = currentLanguage;
+        newLanguage.count = 1;
+        data.push(newLanguage);
       }
-      radar.showRadar(data);
-    });
+    }
+    callback(data);
+  });
+}
 
-
-
+module.exports = {
+  render: function(orgName) {
+      crawlOrg(orgName, function(data) {
+        radar.showRadar(data);
+      });
   }
 };
