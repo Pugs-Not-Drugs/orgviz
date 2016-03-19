@@ -28,5 +28,6 @@
     "d3": "^3.5.16"
   },
   "dependencies": {
+    "octonode": "^0.7.5"
   }
 }
