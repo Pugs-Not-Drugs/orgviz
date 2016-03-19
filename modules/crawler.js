@@ -2,10 +2,10 @@ var github = require('octonode');
 var radar = require('../views/radar-impl');
 
 module.exports = {
-  crawl: function () {
+  crawl: function (orgName) {
     var client = github.client('b4d4ee29cbb858da8cb54a3ca80ebb5bc119f2c3');
 
-    var ghOrg = client.org('rails');
+    var ghOrg = client.org(orgName);
     var data = [];
 
     function findByLanguage(language, data){

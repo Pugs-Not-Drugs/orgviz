@@ -18,7 +18,6 @@ function entry(start, end, quadrant, position, position_angle, direction, direct
 }
 
 function show_radar(data) {
-    debugger
     var highest = 0,
         radarData = [],
         key,
