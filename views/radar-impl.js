@@ -65,7 +65,7 @@ function show_radar(org_data, member_data) {
         quadrant_names.push('potential');
     }
     
-    // Render the radar
+    // Render the radar, clearing it first
     document.getElementById('radar').innerHTML = '';
 
     radar('#radar',

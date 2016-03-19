@@ -163,7 +163,7 @@ function radar(id, data) {
         return 0;
       });
 
-    var oldOpacity;
+    var oldOpacity, oldFill;
     
     var blips = base.selectAll('.blip')
       .data(blip_data)
@@ -173,10 +173,13 @@ function radar(id, data) {
       .attr('transform', function(d) { return "translate(" + (d.x) + "," + (d.y) + ")"; })
       .on('mouseover', function(d){
         oldOpacity = d3.select(this).select("text.name").style('opacity');
+        oldFill = d3.select(this).style('fill');
         d3.select(this).select("text.name").style({opacity:'1.0'});
+        d3.select(this).style({fill: '#FF0000'});
       })
       .on('mouseout', function(d){
         d3.select(this).select("text.name").style({opacity:oldOpacity});
+        d3.select(this).style({fill: oldFill});
       })
 
     blips.append('circle')

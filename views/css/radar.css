@@ -2,6 +2,11 @@
 svg, ul {
     float: left;
 }
+
+#radar ul {
+    display: none;
+}
+
 svg text.name {
     font-family: Arial, Sans-serif;
     font-size: 14px;
