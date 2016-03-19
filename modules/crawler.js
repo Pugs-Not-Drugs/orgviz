@@ -45,7 +45,7 @@ function crawlMembers(orgName, callback) {
   for(var memberIndex in members) {
       membersNames.push(members[memberIndex].login);
     }
-
+    
     console.log(membersNames);
     callback(data);
   });
