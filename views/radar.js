@@ -29,40 +29,29 @@ function radar(id, data) {
     var results = [];
     for (var i in data.data) {
       var entry = data.data[i];
-      var history = entry.history.filter(function(e) {
-        return (e.end == null || (e.end > currentTime && e.start < currentTime));
-      })[0];
 
       var quadrant_delta = 0;
 
       // figure out which quadrant this is
       for (var j = 0, len = data.quadrants.length; j < len; j++) {
-        if (data.quadrants[j] == history.quadrant) {
+        if (data.quadrants[j] == entry.quadrant) {
           quadrant_delta = quad_angle * j;
         }
       }
 
-      var theta = (history.position_angle * quad_angle) + quadrant_delta,
-          r = history.position * horizonWidth,
+      var theta = (entry.angle * quad_angle) + quadrant_delta,
+          r = entry.position * horizonWidth,
           cart = polar_to_cartesian(r, theta);
       var blip = {
         id: i,
         name: entry.name,
-        quadrant: history.quadrant,
+        quadrant: entry.quadrant,
         r: r,
         theta: theta,
         x: cart[0],
         y: cart[1]
       };
 
-      if (history.direction) {
-        var r2 = history.direction * horizonWidth,
-            theta2 = (history.direction_angle * quad_angle) + quadrant_delta,
-            vector = polar_to_cartesian(r2, theta2);
-
-        blip.dx = vector[0] - cart[0];
-        blip.dy = vector[1] - cart[1];
-      }
       results.push(blip);
     }
     return results;

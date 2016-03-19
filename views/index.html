@@ -73,22 +73,18 @@ radar('#radar',
 				name: 'd3',
 				description: 'The d3 library for producing visualisation and data driven documents',
 				links: ['http://d3js.org'],
-				history: [
-					entry(new Date(2013,1,29),new Date(2013,9,29),'languages', 0.8, 0.5, 0.6, 0.5),
-					entry(new Date(2013,9,29),null,'languages', 0.6, 0.5, 0.2, 0.5)
-				]
+        position: 0.8,
+        angle: 0.5,
+        quadrant: 'languages'
 			},
-            {
-                name: 'Ruby on Rails',
-                description: 'Blah blah blah.',
-                links: ['http://rubyonrails.org/'],
-                history: [
-                    entry(null, null, 'languages', 0.7, 0.7, 0.7, 0.7)
-                    // entry(new Date(2014,3,19), new Date(2015,3,19), 'frameworks', 0.7, 0.5, 0.3, 0.5),
-                    // entry(new Date(2014,3,19), null, 'frameworks', 0.7, 0.5, 0.3, 0.5)
-//                    entry(new Date(2015,3,19), null,'frameworks', 0.3, 0.8, 0.4, 0.5)
-                ]
-            }
+      {
+          name: 'Ruby on Rails',
+          description: 'Blah blah blah.',
+          links: ['http://rubyonrails.org/'],
+          position: 0.7,
+          angle: 0.7,
+          quadrant: 'languages'
+      }
 		]
 	});
 </script>
