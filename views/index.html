@@ -19,7 +19,7 @@
     <script src="radar-impl.js"></script>
     <script src="map.js"></script>
     <script src="menu.js"></script>
-    
+
     <script src="./leaflet.js"></script>
 
     <style>
@@ -28,7 +28,7 @@
         height: 400px;
         border: 1px solid lightgray;
       }
-      
+
       #themap {
         width: 600px;
         height: 600px;
@@ -43,7 +43,7 @@
           <nav class="main-menu">
             <ul>
               <li>
-                <a href="index.html">
+                <a href="#radar" class="navbutton">
                 <i class="fa fa-spinner fa-2x"></i>
                         <span class="nav-text">
                             Radar
@@ -51,7 +51,7 @@
                 </a>
               </li>
               <li>
-                <a href="network.html">
+                <a href="#networkGraph" class="navbutton">
                 <i class="fa fa-home fa-2x"></i>
                         <span class="nav-text">
                             Network
@@ -71,9 +71,9 @@
               <button id="crawlBtn" class="button search">Find</button>
           </div>
           <div class="pane">
-              <div id="radar" style="width: 1024px; height: 800px"></div>
-              <div id="themap"></div>
-              <div id="networkgraph"></div>
+              <div id="radar" class="navItem" style="width: 1024px; height: 800px"></div>
+              <div id="themap" class="navItem" style="display:none"></div>
+              <div id="networkgraph" class="navItem" style="display:none"></div>
           </div>
         </div>
       </div>
@@ -88,6 +88,17 @@ $(crawlBtn).click(function () {
   crawler.render($(orgInput).val());
   crawler.renderNetworkGraph($(orgInput).val());
 });
+
+$('.navbutton').click(function(e) {
+  console.log("hello");
+    $('.navItem:visible').each(function() {
+      console.log("hello");
+      $(this).hide();
+    });
+
+    $(this.hash).show();
+    e.preventDefault();
+})
 </script>
 <script>
 
@@ -146,7 +157,7 @@ var network = new vis.Network(container, data, options);
 
 </script>
 
-<script>    
+<script>
     var map = L.map('themap').setView([51.505, -0.09], 10);
 
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
