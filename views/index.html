@@ -80,8 +80,13 @@ $(crawlBtn).click(function () {
 </script>
 <script>
 
-var d = [{login: "fred", image: "", repos: ["test","repo2"]},
-         {login: "bob", image: "", repos: ["test","anotherone"]}]
+var d = [{repository: 'test', collaborators: [{login: 'bob', image: ''},{login: 'fred', image: ''}]},
+         {repository: 'test2', collaborators: [{login: 'bob', image: ''},{login: 'bert', image: ''}]}]
+
+function calculateEdges(d) {
+
+}
+
 // create an array with nodes
 var nodes = [
   {id: 1, label: 'Node 1', image: '../images/test_image.png'},
