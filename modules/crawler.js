@@ -36,6 +36,16 @@ function crawlOrg(orgName, callback) {
   });
 }
 
+function getOrgMembers() {
+  var membersNames = [];
+  client.org(orgName).members(function(err, members){
+
+  for(var memberIndex in members) {
+      membersNames.push(members[memberIndex].login);
+    }
+  });
+}
+
 function crawlMembers(orgName, callback) {
   var data = [];
   var membersNames = [];
@@ -77,5 +87,8 @@ module.exports = {
           radar.showRadar(orgData,memberData);
         })
     });
+  },
+  renderNetworkGraph: function(orgName) {
+
   }
 };
