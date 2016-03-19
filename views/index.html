@@ -91,11 +91,27 @@ $(crawlBtn).click(function () {
 </script>
 <script>
 
-var d = [{repository: 'test', collaborators: [{login: 'bob', image: ''},{login: 'fred', image: ''}]},
-         {repository: 'test2', collaborators: [{login: 'bob', image: ''},{login: 'bert', image: ''}]}]
+var repos = [{repository: 'test', contributors: ['bob', 'fred']},
+             {repository: 'test2', contributors: ['bob', 'bert']}]
 
-function calculateEdges(d) {
+var names = [{login: 'bob', image: ''}, {login: 'fred', image: ''}, {login: 'bert', image: ''}]
 
+function findNodes(names) {
+  var nodes = [];
+  var id_num = 1;
+  var name_id_map = new Map();
+  for (name in names) {
+    nodes.push({id: id_num, label: name.login, image: name.image});
+    name_id_map.set(name.login, id_num);
+    id_num++;
+  }
+}
+
+function findEdges(repos, name_id_map) {
+  var edges = [];
+  for (repo in d) {
+    
+  }
 }
 
 // create an array with nodes
