@@ -37,10 +37,17 @@ function crawlOrg(orgName, callback) {
 }
 
 function crawlMembers(orgName, callback) {
-  var ghOrg = client.org(orgName);
   var data = [];
-  console.log(ghOrg);
-  callback(data);
+  var membersNames = [];
+  client.org(orgName).members(function(err, members){
+
+  for(var memberIndex in members) {
+      membersNames.push(members[memberIndex].login);
+    }
+    
+    console.log(membersNames);
+    callback(data);
+  });
 }
 
 module.exports = {
