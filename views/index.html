@@ -113,41 +113,64 @@ var names = [{login: 'bob', image: ''}, {login: 'fred', image: ''}, {login: 'ber
 function findNodes(names) {
   var nodes = [];
   var id_num = 1;
-  var name_id_map = new Map();
   for (name in names) {
     nodes.push({id: id_num, label: name.login, image: name.image});
+    id_num++;
+  }
+  return nodes;
+}
+
+function findNameIdMap(names) {
+  var id_num = 1;
+  var name_id_map = new Map();
+  for (name in names) {
     name_id_map.set(name.login, id_num);
     id_num++;
   }
+  return name_id_map;
 }
 
 function findEdges(repos, name_id_map) {
   var edges = [];
-  for (repo in d) {
-    
+  for (repo in repos) {
+    for (contributor_x in repo.contributors) {
+      for (contributor_y in repo.contributors) {
+        if (contributor_x != contributor_y) {
+          edges.push({from: name_id_map.get(contributor_x),
+                      to: name_id_map.get(contributor_y)});
+        }
+      }
+    }
   }
+  var uniqueEdges = [];
+  $.each(edges, function(i, el){
+    if($.inArray(el, uniqueEdges) === -1) uniqueEdges.push(el);
+  });
+  return uniqueEdges;
 }
+nodes = findNodes(names);
+name_id_map = findNameIdMap(names);
+edges = findEdges(repos, name_id_map);
 
 // create an array with nodes
-var nodes = [
-  {id: 1, label: 'Node 1', image: '../images/test_image.png'},
-  {id: 2, label: 'Node 2', image: '../images/test_image.png'},
-  {id: 3, label: 'Node 3', image: '../images/test_image.png'},
-  {id: 4, label: 'Node 4', image: '../images/test_image.png'},
-  {id: 5, label: 'Node 5', image: '../images/test_image.png'}
+var nodestemp = [
+  {id: 1, label: 'Node 1'},
+  {id: 2, label: 'Node 2'},
+  {id: 3, label: 'Node 3'},
+  {id: 4, label: 'Node 4'},
+  {id: 5, label: 'Node 5'}
 ];
 // create an array with edges
-var edges = [
+var edgestemp = [
   {from: 1, to: 2},
   {from: 1, to: 3},
   {from: 2, to: 4},
   {from: 2, to: 5}
 ];
-// create a network
 var container = document.getElementById('networkgraph');
 var data = {
-  nodes: nodes,
-  edges: edges
+  nodes: nodestemp,
+  edges: edgestemp
 };
 var options = {
   nodes: {borderWidth: 4,
