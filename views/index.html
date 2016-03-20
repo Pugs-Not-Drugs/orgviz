@@ -13,8 +13,8 @@
     <link type="text/css" rel="stylesheet" href="css/search.css" />
     <link href="../node_modules/vis/dist/vis.css" rel="stylesheet" type="text/css" />
     <link type="text/css" rel="stylesheet" href="css/leaflet.css" />
-    <!--<link type="text/css" rel="stylesheet" href="css/MarkerCluster.css">
-    <link type="text/css" rel="stylesheet" href="css/MarkerCluster.Default.css">-->
+    <link type="text/css" rel="stylesheet" href="css/MarkerCluster.css">
+    <link type="text/css" rel="stylesheet" href="css/MarkerCluster.Default.css">
 
     <script type="text/javascript" src="../node_modules/vis/dist/vis.js"></script>
     <script src="d3.js"></script>
@@ -23,7 +23,7 @@
     <script src="menu.js"></script>
 
     <script src="./leaflet.js"></script>
-    <!--<script src="mapping/leaflet.markercluster.js">-->
+    <script src="mapping/leaflet.markercluster.js"></script>
 
     <style>
       #networkgraph {
@@ -264,7 +264,9 @@ function createBubble() {
 
 
 </script>
+
 <script>
+    
     var userLocations = {
         "locations": [
             { "login": "Bob", "location": "Nottingham"},
@@ -292,18 +294,17 @@ function createBubble() {
             L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(this.map);
-
-//     // var markers = L.markerClusterGroup();
+            
+            var markers = L.markerClusterGroup();    
 
             for (var i = 0; i < 50; i++) {
                 var marker = L.marker(getRandomLocation());
                 marker.bindPopup('Marker: ' + i);
-                marker.addTo(map);
-        //        markers.addLayer(L.marker(getRandomLocation(map)));
+                // marker.addTo(map);
+                markers.addLayer(marker);
             }
-
-//     // map.addLayer(markers);
-
-        }
+    
+            map.addLayer(markers);
+        }    
     }
 </script>
