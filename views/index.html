@@ -121,6 +121,12 @@ channel.bind('updatedBalls',
     createBubble(data,false);
   }
 );
+
+channel.bind('updatedNetwork',
+  function(data) {
+    createNetwork(data)
+  }
+);
 </script>
 
 <script>window.$ = window.jQuery = require('./../scripts/jquery-2.2.2.js');</script>
@@ -138,6 +144,7 @@ $(crawlBtn).click(function () {
   mapper.render($(orgInput).val(), storeLocationData);
   $.get("http://ec3968f3.ngrok.io/radar/" + $(orgInput).val());
   $.get("http://ec3968f3.ngrok.io/balls/" + $(orgInput).val());
+  $.get("http://ec3968f3.ngrok.io/network/" + $(orgInput).val());
 });
 
 $('.navbutton').click(function(e) {
@@ -333,7 +340,7 @@ function createBubble(incomingData, bubbleLoaded) {
 
         refreshMarkers();
     }
-    
+
     function refreshMarkers(firstView) {
         if (!this.markers) {
             return;
