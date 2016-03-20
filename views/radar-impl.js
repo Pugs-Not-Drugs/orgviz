@@ -28,20 +28,20 @@ function append_radar_quadrant(data, radar_data, quadrant_name) {
     // based on this
     for (key in data) {
         entry = data[key];
-        highest = Math.max(highest, entry.count);
+        highest = Math.max(highest, entry.Count);
     }
 
     // Loop through all the entries
     for (key in data) {
         entry = data[key];      // e.g. {'language': 'C++', 'count': 800 }
         radar_entry = {
-            'name': entry.language,
+            'name': entry.Language,
             'description': 'Some interesting text here.',
             'links': [ 'http://an.interesting-site.com' ],
-            'position': 1 - 0.95 * entry.count / highest,
+            'position': 1 - 0.95 * entry.Count / highest,
             'angle': i / (data.length),
             'quadrant': quadrant_name,
-            'count': entry.count
+            'count': entry.Count
         };
 
         // Add new entry to existing radar data array
@@ -57,14 +57,14 @@ function show_radar(org_data, member_data) {
         i,
         radar_entry,
         quadrant_names = ['current skills'];
-        
+
     append_radar_quadrant(org_data, radar_data, 'current skills');
-    
+
     if (member_data) {
         append_radar_quadrant(member_data, radar_data, 'potential');
         quadrant_names.push('potential');
     }
-    
+
     // Render the radar, clearing it first
     document.getElementById('radar').innerHTML = '';
 

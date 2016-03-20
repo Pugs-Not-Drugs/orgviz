@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "octonode": "^0.7.5",
+    "pusher": "^1.2.1",
     "thenify": "^3.2.0",
     "underscore": "^1.8.3"
   }

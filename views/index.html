@@ -101,6 +101,17 @@
   </body>
 </html>
 
+<script src="http://js.pusher.com/3.0/pusher.min.js"></script>
+<script>
+var socket = new Pusher('9ba0fdd2241a9d87841e');
+var channel = socket.subscribe('pugs');
+channel.bind('updatedRadar',
+  function(data) {
+    show_radar(data.OrgData,data.MemberData);
+  }
+);
+</script>
+
 <script>window.$ = window.jQuery = require('./../scripts/jquery-2.2.2.js');</script>
 <script>
 
@@ -115,10 +126,11 @@ const crawler = require('./../modules/crawler');
 const influence = require('./../modules/influence');
 const mapper = require('./../modules/map')
 $(crawlBtn).click(function () {
-  crawler.render($(orgInput).val());
+  //crawler.render($(orgInput).val());
   crawler.renderNetworkGraph($(orgInput).val());
   influence.render($(orgInput).val(),createBubble);
   mapper.render($(orgInput).val(), storeLocationData);
+  $.get("http://ec3968f3.ngrok.io/radar/" + $(orgInput).val());
 });
 
 $('.navbutton').click(function(e) {
