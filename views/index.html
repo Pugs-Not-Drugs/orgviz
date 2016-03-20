@@ -158,7 +158,6 @@ function createNetwork(data) {
         nodes.push({id: id_num, label: names[nameIndex].Name, image: names[nameIndex].AvatarUrl});
         id_num++;
       }
-      debugger;
       return nodes;
     }
 
@@ -174,20 +173,34 @@ function createNetwork(data) {
 
     function findEdges(repos, name_id_map) {
       var edges = [];
+      //var onceFoundEdges = [];
+      //debugger;
       for (repoIndex in repos) {
-        for (contributorXIndex in repos[repoIndex].contributors) {
-          for (contributorYIndex in repos[repoIndex].contributors) {
-            if (repos[repoIndex].contributors[contributorXIndex].Name != repos[repoIndex].contributors[contributorYIndex].Name) {
-              edges.push({from: name_id_map.get(repos[repoIndex].contributors[contributorXIndex].Name),
-                          to: name_id_map.get(repos[repoIndex].contributors[contributorYIndex].Name)});
+        for (contributorXIndex in repos[repoIndex]) {
+          for (contributorYIndex in repos[repoIndex]) {
+            if (repos[repoIndex][contributorXIndex] != repos[repoIndex][contributorYIndex]) {
+              edges.push({from: name_id_map.get(repos[repoIndex][contributorXIndex]),
+                          to: name_id_map.get(repos[repoIndex][contributorYIndex])});
             }
           }
         }
       }
       var uniqueEdges = [];
       for (edgeIndex in edges) {
-          if (uniqueEdges.indexOf(edges[edgeIndex]) != -1) {
+          if (uniqueEdges.length == 0) {
               uniqueEdges.push(edges[edgeIndex]);
+              continue;
+          }
+          var matched = false;
+          console.log("hit here");
+          for (uniqueEdgeIndex in uniqueEdges) {
+              if (((uniqueEdges[uniqueEdgeIndex].to == edges[edgeIndex].to) && (uniqueEdges[uniqueEdgeIndex].from == edges[edgeIndex].from)
+                  || (uniqueEdges[uniqueEdgeIndex].to == edges[edgeIndex].from) && (uniqueEdges[uniqueEdgeIndex].from == edges[edgeIndex].to))) {
+                  matched = true;
+              }
+          }
+          if (!matched) {
+            uniqueEdges.push(edges[edgeIndex]);
           }
       }
       return uniqueEdges;
@@ -207,7 +220,8 @@ function createNetwork(data) {
               borderWidthSelected: 8,
               shadow: false,
               shape: 'circularImage',
-              brokenImage: '../images/test_image.png'}
+              brokenImage: '../images/test_image.png'},
+      layout: {improvedLayout: false}
     };
     var network = new vis.Network(container, data, options);
 }
