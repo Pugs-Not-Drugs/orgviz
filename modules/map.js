@@ -14,7 +14,7 @@ function crawlMemberLocations(orgName, callback){
       if(body.location === null) {
         return;
       }
-      locations.push({login: body.login, location: body.location })
+      locations.push({login: body.login, location: body.location, avatar: body.avatar_url })
         callback(locations);
     });
 
