@@ -177,12 +177,10 @@ function createNetwork(data) {
       //debugger;
       for (repoIndex in repos) {
         for (contributorXIndex in repos[repoIndex]) {
-          for (contributorYIndex in repos[repoIndex]) {
-            if (repos[repoIndex][contributorXIndex] != repos[repoIndex][contributorYIndex]) {
+            if (repos[repoIndex][contributorXIndex] != repos[repoIndex]) {
               edges.push({from: name_id_map.get(repos[repoIndex][contributorXIndex]),
-                          to: name_id_map.get(repos[repoIndex][contributorYIndex])});
+                          to: name_id_map.get(repoIndex)});
             }
-          }
         }
       }
       var uniqueEdges = [];
