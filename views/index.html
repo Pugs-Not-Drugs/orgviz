@@ -157,30 +157,32 @@ $('.navbutton').click(function(e) {
 
     if (this.hash == "#themap") {
         ensureMapLoaded();
-    } else if (this.hash == "#networkgraph") {
-        createNetwork();
     }
 })
 </script>
 <script>
 
-function createNetwork(repos, names) {
+function createNetwork(data) {
+
+    var repos = data.Network;
+    var names = data.NetworkCollabs;
 
     function findNodes(names) {
       var nodes = [];
       var id_num = 1;
-      for (name in names) {
-        nodes.push({id: id_num, label: name.login, image: name.image});
+      for (nameIndex in names) {
+        nodes.push({id: id_num, label: names[nameIndex].Name, image: names[nameIndex].AvatarUrl});
         id_num++;
       }
+      debugger;
       return nodes;
     }
 
     function findNameIdMap(names) {
       var id_num = 1;
       var name_id_map = new Map();
-      for (name in names) {
-        name_id_map.set(name.login, id_num);
+      for (nameIndex in names) {
+        name_id_map.set(names[nameIndex].Name, id_num);
         id_num++;
       }
       return name_id_map;
@@ -188,20 +190,22 @@ function createNetwork(repos, names) {
 
     function findEdges(repos, name_id_map) {
       var edges = [];
-      for (repo in repos) {
-        for (contributor_x in repo.contributors) {
-          for (contributor_y in repo.contributors) {
-            if (contributor_x != contributor_y) {
-              edges.push({from: name_id_map.get(contributor_x),
-                          to: name_id_map.get(contributor_y)});
+      for (repoIndex in repos) {
+        for (contributorXIndex in repos[repoIndex].contributors) {
+          for (contributorYIndex in repos[repoIndex].contributors) {
+            if (repos[repoIndex].contributors[contributorXIndex].Name != repos[repoIndex].contributors[contributorYIndex].Name) {
+              edges.push({from: name_id_map.get(repos[repoIndex].contributors[contributorXIndex].Name),
+                          to: name_id_map.get(repos[repoIndex].contributors[contributorYIndex].Name)});
             }
           }
         }
       }
       var uniqueEdges = [];
-      $.each(edges, function(i, el){
-        if($.inArray(el, uniqueEdges) === -1) uniqueEdges.push(el);
-      });
+      for (edgeIndex in edges) {
+          if (uniqueEdges.indexOf(edges[edgeIndex]) != -1) {
+              uniqueEdges.push(edges[edgeIndex]);
+          }
+      }
       return uniqueEdges;
     }
     nodes = findNodes(names);
