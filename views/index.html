@@ -36,6 +36,12 @@
         width: 600px;
         height: 600px;
       }
+      
+      .github-avatar {
+          width: 120px;
+          height: 120px;
+          border: 1px #1e1e1e;
+      }
 
       #influencebubble {
         width: 100%;
@@ -336,12 +342,13 @@ function createBubble(incomingData, bubbleLoaded) {
     
     function refreshMarkers() {
         if (loginLocations && loginLocations.length > 0) {
-            debugger
             this.markers.clearLayers();
             
             for (var i = 0; i < loginLocations.length; i++) {
                 var marker = L.marker(loginLocations[i].location);
-                marker.bindPopup(loginLocations[i].login);
+                marker.bindPopup('<img class="github-avatar" src="' + 
+                    loginLocations[i].avatar + '"/><br/><b>' + 
+                    loginLocations[i].login + "</b>");
                 markers.addLayer(marker);
             }
         }
