@@ -290,6 +290,10 @@ function createBubble(incomingData, bubbleLoaded) {
         return [lat, lng];
     }
 
+    function storeLocationData(data) {
+        
+    }
+    
     function ensureMapLoaded() {
         if (!map) {
             this.map = L.map('themap').setView([52.954783,-1.158109], 8);
