@@ -212,12 +212,7 @@ var network = new vis.Network(container, data, options);
 var bubbleLoaded = false;
 
 var something = [{name:"fred", count: 2},
-{name:"bob", count: 5}]
-
-// Fake JSON data
-var json = {"countries_msg_vol": {
-  "CA": 170, "US": 393, "BB": 12, "CU": 9, "BR": 89, "MX": 192, "PY": 32, "UY": 9, "VE": 25, "BG": 42, "CZ": 12, "HU": 7, "RU": 184, "FI": 42, "GB": 162, "IT": 87, "ES": 65, "FR": 42, "DE": 102, "NL": 12, "CN": 92, "JP": 65, "KR": 87, "TW": 9, "IN": 98, "SG": 32, "ID": 4, "MY": 7, "VN": 8, "AU": 129, "NZ": 65, "GU": 11, "EG": 18, "LY": 4, "ZA": 76, "A1": 2, "Other": 254
-}};
+                 {name:"bob", count: 5}]
 
 // D3 Bubble Chart
 function createBubble() {
@@ -255,11 +250,19 @@ function createBubble() {
       .attr('class', function(d) { return d.className; })
       .style('fill', function(d) { return color(d.className); });
 
+  vis.enter().append('text')
+      .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
+      .attr("dy", ".3em")
+      .style("text-anchor", "middle")
+      .text(function(d) { return d.className.substring(0, d.r / 3); });
+
   function processData(people) {
     var newDataSet = [];
 
     for(var personIndex in people) {
-      newDataSet.push({name: people[personIndex].name, className: people[personIndex].name, size: people[personIndex].count});
+      newDataSet.push({name: people[personIndex].name,
+                       className: people[personIndex].name,
+                       size: people[personIndex].count});
     }
     return {children: newDataSet};
   }
@@ -270,7 +273,7 @@ function createBubble() {
 </script>
 
 <script>
-    
+
     var userLocations = {
         "locations": [
             { "login": "Bob", "location": "Nottingham"},
@@ -298,8 +301,8 @@ function createBubble() {
             L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(this.map);
-            
-            var markers = L.markerClusterGroup();    
+
+            var markers = L.markerClusterGroup();
 
             for (var i = 0; i < 50; i++) {
                 var marker = L.marker(getRandomLocation());
@@ -307,8 +310,8 @@ function createBubble() {
                 // marker.addTo(map);
                 markers.addLayer(marker);
             }
-    
+
             map.addLayer(markers);
-        }    
+        }
     }
 </script>
