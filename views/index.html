@@ -133,11 +133,8 @@ $('#orgInput').keyup(function(event) {
     }
 });
 
-const crawler = require('./../modules/crawler');
-const influence = require('./../modules/influence');
 const mapper = require('./../modules/map')
 $(crawlBtn).click(function () {
-  crawler.renderNetworkGraph($(orgInput).val());
   mapper.render($(orgInput).val(), storeLocationData);
   $.get("http://ec3968f3.ngrok.io/radar/" + $(orgInput).val());
   $.get("http://ec3968f3.ngrok.io/balls/" + $(orgInput).val());
@@ -336,7 +333,7 @@ function createBubble(incomingData, bubbleLoaded) {
 
         refreshMarkers();
     }
-
+    
     function refreshMarkers(firstView) {
         if (!this.markers) {
             return;
