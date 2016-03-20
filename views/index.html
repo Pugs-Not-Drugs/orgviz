@@ -27,16 +27,15 @@
 
     <style>
       #networkgraph {
-        width: 400px;
-        height: 400px;
-        border: 1px solid lightgray;
+        width: 600px;
+        height: 600px;
       }
 
       #themap {
         width: 600px;
         height: 600px;
       }
-      
+
       .github-avatar {
           width: 120px;
           height: 120px;
@@ -65,7 +64,7 @@
                 </a>
               </li>
               <li>
-                <a href="#networkGraph" class="navbutton">
+                <a href="#networkgraph" class="navbutton">
                 <i class="fa fa-share-alt-square fa-2x"></i>
                         <span class="nav-text">
                             Network
@@ -138,6 +137,8 @@ $('.navbutton').click(function(e) {
 
     if (this.hash == "#themap") {
         ensureMapLoaded();
+    } else if (this.hash == "#networkgraph") {
+        createNetwork();
     }
 })
 </script>
@@ -190,35 +191,37 @@ nodes = findNodes(names);
 name_id_map = findNameIdMap(names);
 edges = findEdges(repos, name_id_map);
 
-// create an array with nodes
-var nodestemp = [
-  {id: 1, label: 'Node 1', image: '../images/test_image.png'},
-  {id: 2, label: 'Node 2', image: '../images/test_image.png'},
-  {id: 3, label: 'Node 3', image: '../images/test_image.png'},
-  {id: 4, label: 'Node 4', image: '../images/test_image.png'},
-  {id: 5, label: 'Node 5', image: '../images/test_image.png'}
-];
-// create an array with edges
-var edgestemp = [
-  {from: 1, to: 2},
-  {from: 1, to: 3},
-  {from: 2, to: 4},
-  {from: 2, to: 5}
-];
-var container = document.getElementById('networkgraph');
-var data = {
-  nodes: nodestemp,
-  edges: edgestemp
-};
-var options = {
-  nodes: {borderWidth: 4,
-          borderWidthSelected: 8,
-          shadow: false,
-          shape: 'circularImage',
-          brokenImage: '../images/test_image.png'}
-};
-var network = new vis.Network(container, data, options);
-
+function createNetwork() {
+    // create an array with nodes
+    var nodestemp = [
+      {id: 1, label: 'Node 1', image: '../images/test_image.png'},
+      {id: 2, label: 'Node 2', image: '../images/test_image.png'},
+      {id: 3, label: 'Node 3', image: '../images/test_image.png'},
+      {id: 4, label: 'Node 4', image: '../images/test_image.png'},
+      {id: 5, label: 'Node 5', image: '../images/test_image.png'}
+    ];
+    // create an array with edges
+    var edgestemp = [
+      {from: 1, to: 2},
+      {from: 1, to: 3},
+      {from: 2, to: 4},
+      {from: 2, to: 5}
+    ];
+    var container = document.getElementById('networkgraph');
+    //container.html('');
+    var data = {
+      nodes: nodestemp,
+      edges: edgestemp
+    };
+    var options = {
+      nodes: {borderWidth: 4,
+              borderWidthSelected: 8,
+              shadow: false,
+              shape: 'circularImage',
+              brokenImage: '../images/test_image.png'}
+    };
+    var network = new vis.Network(container, data, options);
+}
 </script>
 
 <script>
@@ -295,15 +298,15 @@ function createBubble(incomingData, bubbleLoaded) {
 
         return [lat, lng];
     }
-    
+
     function storeLocationData(mapData) {
         var firstMapView = !loginLocations;
-        
+
         loginLocations = [];
         for (var i = 0; i < mapData.length; i++) {
             loginLocations.push(mapData[i]);
         }
-        
+
         refreshMarkers(firstMapView);
     }
 
@@ -321,28 +324,28 @@ function createBubble(incomingData, bubbleLoaded) {
 
         refreshMarkers();
     }
-    
+
     function refreshMarkers(firstView) {
         if (!this.markers) {
             return;
         }
-        
+
         if (loginLocations && loginLocations.length > 0) {
             this.markers.clearLayers();
-            
+
             var locs = [];
-            
+
             for (var i = 0; i < loginLocations.length; i++) {
                 var location = loginLocations[i].location;
                 var marker = L.marker(location);
-                marker.bindPopup('<img class="github-avatar" src="' + 
-                    loginLocations[i].avatar + '"/><br/><b>' + 
+                marker.bindPopup('<img class="github-avatar" src="' +
+                    loginLocations[i].avatar + '"/><br/><b>' +
                     loginLocations[i].login + "</b>");
                 markers.addLayer(marker);
-                
+
                 locs.push(location);
             }
-            
+
             var bounds = L.latLngBounds(locs).pad(0.2);
             if (firstView) {
                 this.map.fitBounds(bounds);
