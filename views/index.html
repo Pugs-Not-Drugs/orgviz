@@ -106,29 +106,6 @@
   </body>
 </html>
 
-<script src="http://js.pusher.com/3.0/pusher.min.js"></script>
-<script>
-var socket = new Pusher('9ba0fdd2241a9d87841e');
-var channel = socket.subscribe('pugs');
-channel.bind('updatedRadar',
-  function(data) {
-    show_radar(data.OrgData,data.MemberData);
-  }
-);
-
-channel.bind('updatedBalls',
-  function(data) {
-    createBubble(data,false);
-  }
-);
-
-channel.bind('updatedNetwork',
-  function(data) {
-    createNetwork(data)
-  }
-);
-</script>
-
 <script>window.$ = window.jQuery = require('./../scripts/jquery-2.2.2.js');</script>
 <script>
 
@@ -142,9 +119,15 @@ $('#orgInput').keyup(function(event) {
 const mapper = require('./../modules/map')
 $(crawlBtn).click(function () {
   mapper.render($(orgInput).val(), storeLocationData);
-  $.get("http://ec3968f3.ngrok.io/radar/" + $(orgInput).val());
-  $.get("http://ec3968f3.ngrok.io/balls/" + $(orgInput).val());
-  $.get("http://ec3968f3.ngrok.io/network/" + $(orgInput).val());
+  $.get("http://ec3968f3.ngrok.io/radar/" + $(orgInput).val(), function(data) {
+      show_radar(data.OrgData,data.MemberData);
+  });
+  $.get("http://ec3968f3.ngrok.io/balls/" + $(orgInput).val(), function(data) {
+      createBubble(data,false);
+  });
+  $.get("http://ec3968f3.ngrok.io/network/" + $(orgInput).val(), function(data) {
+    createNetwork(data)
+  });
 });
 
 $('.navbutton').click(function(e) {
