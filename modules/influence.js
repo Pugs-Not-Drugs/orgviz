@@ -12,7 +12,7 @@ function findByIn(influ, data){
 }
 
 module.exports = {
-  render: function(orgName) {
+  render: function(orgName, createBubbleFn) {
     var data = [];
     var membersNames = [];
 
@@ -36,13 +36,11 @@ module.exports = {
                newinflu.count = 1;
                data.push(newinflu);
              }
-
           }
-          console.log(data);
+
+          createBubbleFn(data, false);
       });
       }
-
-    //  https://api.github.com/users/andy-c-jones/following
     });
 
   }

@@ -108,7 +108,7 @@ const influence = require('./../modules/influence');
 $(crawlBtn).click(function () {
   crawler.render($(orgInput).val());
   crawler.renderNetworkGraph($(orgInput).val());
-  influence.render($(orgInput).val());
+  influence.render($(orgInput).val(),createBubble);
 });
 
 $('.navbutton').click(function(e) {
@@ -123,7 +123,10 @@ $('.navbutton').click(function(e) {
     if (this.hash == "#themap") {
         ensureMapLoaded();
     } else if (this.hash == "#influencebubble") {
-        createBubble();
+      var something = [{name:"fred", count: 2},
+      {name:"bob", count: 5}];
+      var bubbleLoaded = false;
+      createBubble(something, bubbleLoaded);
     }
 })
 </script>
@@ -209,20 +212,14 @@ var network = new vis.Network(container, data, options);
 
 <script>
 
-var bubbleLoaded = false;
-
-var something = [{name:"fred", count: 2},
-                 {name:"bob", count: 5}]
-
 // D3 Bubble Chart
-function createBubble() {
-
+function createBubble(incomingData, bubbleLoaded) {
     if (bubbleLoaded) {
         return;
     }
 
   var diameter = 600;
-
+  d3.select('#influencebubble').html("");
   var svg = d3.select('#influencebubble').append('svg')
           .attr('width', diameter)
           .attr('height', diameter);
@@ -236,7 +233,7 @@ function createBubble() {
         .padding(3);
 
   // generate data with calculated layout values
-  var nodes = bubble.nodes(processData(something))
+  var nodes = bubble.nodes(processData(incomingData))
             .filter(function(d) { return !d.children; }); // filter out the outer bubble
 
   var vis = svg.selectAll('circle')
@@ -266,7 +263,6 @@ function createBubble() {
     }
     return {children: newDataSet};
   }
-  bubbleLoaded = true;
 }
 
 
