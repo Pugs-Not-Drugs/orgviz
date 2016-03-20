@@ -103,6 +103,14 @@
 
 <script>window.$ = window.jQuery = require('./../scripts/jquery-2.2.2.js');</script>
 <script>
+
+// Pressing return after entering organisation name clicks Go button    
+$('#orgInput').keyup(function(event) {
+    if (event.keyCode == 13) {
+        $('#crawlBtn').click();
+    }
+});
+    
 const crawler = require('./../modules/crawler');
 const influence = require('./../modules/influence');
 $(crawlBtn).click(function () {
