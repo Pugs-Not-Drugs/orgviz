@@ -118,7 +118,7 @@ $(crawlBtn).click(function () {
   crawler.render($(orgInput).val());
   crawler.renderNetworkGraph($(orgInput).val());
   influence.render($(orgInput).val(),createBubble);
-  mapper.render($(orgInput).val());
+  mapper.render($(orgInput).val(), storeLocationData);
 });
 
 $('.navbutton').click(function(e) {
@@ -295,8 +295,8 @@ function createBubble(incomingData, bubbleLoaded) {
         return [lat, lng];
     }
 
-    function storeLocationData(data) {
-
+    function storeLocationData(mapDataInconming) {
+      console.log(mapDataInconming);
     }
 
     function ensureMapLoaded() {
@@ -319,4 +319,5 @@ function createBubble(incomingData, bubbleLoaded) {
             map.addLayer(markers);
         }
     }
+
 </script>

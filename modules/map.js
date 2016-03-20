@@ -3,7 +3,7 @@ var github = require('octonode');
 
 var client = github.client('b4d4ee29cbb858da8cb54a3ca80ebb5bc119f2c3');
 
-function crawlMemberLocations(orgName){
+function crawlMemberLocations(orgName, callback){
   var locations = [];
 
 
@@ -15,6 +15,7 @@ function crawlMemberLocations(orgName){
         return;
       }
       locations.push({login: body.login, location: body.location })
+        callback(locations);
     });
 
     }
@@ -22,7 +23,9 @@ function crawlMemberLocations(orgName){
 }
 
 module.exports = {
-  render: function(orgName) {
-      crawlMemberLocations(orgName);
+  render: function(orgName, storeLocationFn) {
+      crawlMemberLocations(orgName, function(data){
+        storeLocationFn(data);
+      })
   }
 };
