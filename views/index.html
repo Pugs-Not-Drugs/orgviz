@@ -38,7 +38,7 @@
       }
 
       #influencebubble {
-        width: 600px;
+        width: 100%;
         height: 600px;
       }
     </style>
@@ -122,11 +122,6 @@ $('.navbutton').click(function(e) {
 
     if (this.hash == "#themap") {
         ensureMapLoaded();
-    } else if (this.hash == "#influencebubble") {
-      var something = [{name:"fred", count: 2},
-      {name:"bob", count: 5}];
-      var bubbleLoaded = false;
-      createBubble(something, bubbleLoaded);
     }
 })
 </script>
@@ -218,7 +213,7 @@ function createBubble(incomingData, bubbleLoaded) {
         return;
     }
 
-  var diameter = 600;
+  var diameter = 900;
   d3.select('#influencebubble').html("");
   var svg = d3.select('#influencebubble').append('svg')
           .attr('width', diameter)
@@ -227,9 +222,9 @@ function createBubble(incomingData, bubbleLoaded) {
   var bubble = d3.layout.pack()
         .size([diameter, diameter])
         .value(function(d) {return d.size;})
-         // .sort(function(a, b) {
-        // 	return -(a.value - b.value)
-        // })
+        .sort(function(a, b) {
+        	return -(a.value - b.value)
+         })
         .padding(3);
 
   // generate data with calculated layout values
@@ -291,9 +286,9 @@ function createBubble(incomingData, bubbleLoaded) {
     }
 
     function storeLocationData(data) {
-        
+
     }
-    
+
     function ensureMapLoaded() {
         if (!map) {
             this.map = L.map('themap').setView([52.954783,-1.158109], 8);
