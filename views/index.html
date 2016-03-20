@@ -27,7 +27,7 @@
 
     <style>
       #networkgraph {
-        width: 600px;
+        width: 100%;
         height: 600px;
       }
 
@@ -219,7 +219,7 @@ function createNetwork(data) {
               shadow: false,
               shape: 'circularImage',
               brokenImage: '../images/test_image.png'},
-      layout: {improvedLayout: false}
+      layout: {improvedLayout: true}
     };
     var network = new vis.Network(container, data, options);
 }
