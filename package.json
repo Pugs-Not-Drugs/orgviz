@@ -29,6 +29,8 @@
     "vis": "^4.15.1"
   },
   "dependencies": {
-    "octonode": "^0.7.5"
+    "octonode": "^0.7.5",
+    "thenify": "^3.2.0",
+    "underscore": "^1.8.3"
   }
 }

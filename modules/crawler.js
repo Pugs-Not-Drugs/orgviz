@@ -1,5 +1,7 @@
 var github = require('octonode');
 var radar = require('../views/radar-impl');
+var thenify = require('thenify');
+var underscore = require('underscore');
 
 var client = github.client('b4d4ee29cbb858da8cb54a3ca80ebb5bc119f2c3');
 
@@ -10,6 +12,15 @@ function findByLanguage(language, data){
         }
     }
     return -1;
+}
+
+function findByRepo(repo, data){
+  for(var repoIndex in data){
+    if(data[repoIndex].repository === repo){
+      return repoIndex;
+    }
+  }
+  return -1;
 }
 
 function crawlOrg(orgName, callback) {
@@ -36,30 +47,78 @@ function crawlOrg(orgName, callback) {
   });
 }
 
-function crawlReposForCollab(orgName) {
-  var data = [];
-  var repoNames = [];
-  client.org(orgName).repos(function(err, repos){
 
-  for(var repoIndex in repos) {
-      repoNames.push(repos[repoIndex].name);
-    }
+function crawlReposForCollab(orgName){
+  function* hello(orgName){
+    var orgs = client.org(orgName);
+    var orgRepos = thenify(orgs.repos.bind(orgs));
 
-  for(var nameIndex in repoNames) {
-    var ok = repoNames[nameIndex];
-    var repo = client.repo(orgName + '/' + ok);
-    repo.contributors(function(err, people){
-      var nameList = [];
-      for(var personIndex in people) {
-        nameList.push(people[personIndex].login)
-      }
-      data.push({repository: ok, contributors: nameList})
-    })
+
+    yield orgRepos();
   }
 
+  function* getContributors(orgName ,repoName){
+      var org = client.org(orgName);
+      var orgRepo = org.repo(orgName + '/' + repoName);
+      var orgContrib = thenify(orgRepo.contributors.bind(orgRepo));
 
-  });
+      yield orgContrib();
+  }
+  for(var repos of hello(orgName)){
+    var p = Promise.resolve(repos);
+    p.then(function(v) {
+      var data = [];
+
+      for(var r in v[0]){
+        for(var contribs in getContributors(orgName, v[0][r].name)){
+            console.log(contribs);
+            var prom = Promise.resolve(contribs);
+            prom.then(function(c){
+                console.log(c);
+            });
+        }
+        // data.push({repository: v[0][r].name, contributors: [] });
+        // client.get('https://api.github.com/repos/' + orgName + '/' + v[0][r].name + '/contributors',
+        // function(err, status, body) {
+        //   for(var user in body){
+        //       //var repoIndex = findByRepo(v[0][r].name, data);
+        //       //if(repoIndex !== -1){
+        //
+        //         data[repoIndex].contributors.push(body[user].name);
+        //       //}
+        //   }
+        //   console.log(data);
+        // });
+      }
+    });
+  }
 }
+
+
+// function crawlReposForCollab(orgName) {
+//   var data = [];
+//   var repoNames = [];
+//   client.org(orgName).repos(function(err, repos){
+//
+//   for(var repoIndex in repos) {
+//       repoNames.push(repos[repoIndex].name);
+//     }
+//
+//   for(var nameIndex in repoNames) {
+//     var ok = repoNames[nameIndex];
+//     var repo = client.repo(orgName + '/' + ok);
+//     repo.contributors(function(err, people){
+//       var nameList = [];
+//       for(var personIndex in people) {
+//         nameList.push(people[personIndex].login)
+//       }
+//       data.push({repository: ok, contributors: nameList})
+//     })
+//   }
+//
+//
+//   });
+// }
 
 function crawlMembers(orgName, callback) {
   var data = [];
