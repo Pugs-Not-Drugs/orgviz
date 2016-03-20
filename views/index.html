@@ -309,12 +309,14 @@ function createBubble(incomingData, bubbleLoaded) {
     }
     
     function storeLocationData(mapData) {
+        var firstMapView = !loginLocations;
+        
         loginLocations = [];
         for (var i = 0; i < mapData.length; i++) {
             loginLocations.push(mapData[i]);
         }
         
-        refreshMarkers();
+        refreshMarkers(firstMapView);
     }
 
     function ensureMapLoaded() {
@@ -326,30 +328,39 @@ function createBubble(incomingData, bubbleLoaded) {
             }).addTo(this.map);
 
             this.markers = L.markerClusterGroup();
-
-            // for (var i = 0; i < 50; i++) {
-            //     var marker = L.marker(getRandomLocation());
-            //     marker.bindPopup('Marker: ' + i);
-            //     // marker.addTo(map);
-            //     markers.addLayer(marker);
-            // }
-
             map.addLayer(markers);
         }
 
         refreshMarkers();
     }
     
-    function refreshMarkers() {
+    function refreshMarkers(firstView) {
+        if (!this.markers) {
+            return;
+        }
+        
         if (loginLocations && loginLocations.length > 0) {
             this.markers.clearLayers();
             
+            var locs = [];
+            
             for (var i = 0; i < loginLocations.length; i++) {
-                var marker = L.marker(loginLocations[i].location);
+                var location = loginLocations[i].location;
+                var marker = L.marker(location);
                 marker.bindPopup('<img class="github-avatar" src="' + 
                     loginLocations[i].avatar + '"/><br/><b>' + 
                     loginLocations[i].login + "</b>");
                 markers.addLayer(marker);
+                
+                locs.push(location);
+            }
+            
+            var bounds = L.latLngBounds(locs).pad(0.2);
+            if (firstView) {
+                this.map.fitBounds(bounds);
+            }
+            else {
+                this.map.flyToBounds(bounds, { duration: 3 });
             }
         }
     }
