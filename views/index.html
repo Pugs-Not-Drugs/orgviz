@@ -275,15 +275,10 @@ function createBubble(incomingData, bubbleLoaded) {
 
 <script>
 
-    var userLocations = {
-        "locations": [
-            { "login": "Bob", "location": "Nottingham"},
-            { "login": "Eric", "location": "Derby"},
-            { "login": "Anne", "location": "Aberdeen"}
-        ]
-    };
-
-    var map;
+    // NB: logins are hard-coded now because of geocoder rate limits for location matching
+    var map,
+        loginLocations,
+        markers;
 
     function getRandomLocation() {
         var sw = this.map.getBounds().getSouthWest();
@@ -294,9 +289,14 @@ function createBubble(incomingData, bubbleLoaded) {
 
         return [lat, lng];
     }
-
-    function storeLocationData(mapDataInconming) {
-      console.log(mapDataInconming);
+    
+    function storeLocationData(mapData) {
+        loginLocations = [];
+        for (var i = 0; i < mapData.length; i++) {
+            loginLocations.push(mapData[i]);
+        }
+        
+        refreshMarkers();
     }
 
     function ensureMapLoaded() {
@@ -307,16 +307,31 @@ function createBubble(incomingData, bubbleLoaded) {
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(this.map);
 
-            var markers = L.markerClusterGroup();
+            this.markers = L.markerClusterGroup();
 
-            for (var i = 0; i < 50; i++) {
-                var marker = L.marker(getRandomLocation());
-                marker.bindPopup('Marker: ' + i);
-                // marker.addTo(map);
-                markers.addLayer(marker);
-            }
+            // for (var i = 0; i < 50; i++) {
+            //     var marker = L.marker(getRandomLocation());
+            //     marker.bindPopup('Marker: ' + i);
+            //     // marker.addTo(map);
+            //     markers.addLayer(marker);
+            // }
 
             map.addLayer(markers);
+        }
+
+        refreshMarkers();
+    }
+    
+    function refreshMarkers() {
+        if (loginLocations && loginLocations.length > 0) {
+            debugger
+            this.markers.clearLayers();
+            
+            for (var i = 0; i < loginLocations.length; i++) {
+                var marker = L.marker(loginLocations[i].location);
+                marker.bindPopup(loginLocations[i].login);
+                markers.addLayer(marker);
+            }
         }
     }
 
