@@ -177,7 +177,7 @@ function createNetwork(data) {
       //debugger;
       for (repoIndex in repos) {
         for (contributorXIndex in repos[repoIndex]) {
-            if (repos[repoIndex][contributorXIndex] != repos[repoIndex]) {
+            if (repos[repoIndex][contributorXIndex] != repoIndex) {
               edges.push({from: name_id_map.get(repos[repoIndex][contributorXIndex]),
                           to: name_id_map.get(repoIndex)});
             }
