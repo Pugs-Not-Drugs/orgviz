@@ -36,7 +36,7 @@
         width: 600px;
         height: 600px;
       }
-      
+
       .github-avatar {
           width: 120px;
           height: 120px;
@@ -116,6 +116,12 @@ channel.bind('updatedRadar',
     show_radar(data.OrgData,data.MemberData);
   }
 );
+
+channel.bind('updatedBalls',
+  function(data) {
+    createBubble(data,false);
+  }
+);
 </script>
 
 <script>window.$ = window.jQuery = require('./../scripts/jquery-2.2.2.js');</script>
@@ -132,15 +138,13 @@ const crawler = require('./../modules/crawler');
 const influence = require('./../modules/influence');
 const mapper = require('./../modules/map')
 $(crawlBtn).click(function () {
-  //crawler.render($(orgInput).val());
   crawler.renderNetworkGraph($(orgInput).val());
-  influence.render($(orgInput).val(),createBubble);
   mapper.render($(orgInput).val(), storeLocationData);
   $.get("http://ec3968f3.ngrok.io/radar/" + $(orgInput).val());
+  $.get("http://ec3968f3.ngrok.io/balls/" + $(orgInput).val());
 });
 
 $('.navbutton').click(function(e) {
-  console.log("hello");
     $('.navItem:visible').each(function() {
       $(this).hide();
     });
@@ -237,9 +241,6 @@ var network = new vis.Network(container, data, options);
 
 // D3 Bubble Chart
 function createBubble(incomingData, bubbleLoaded) {
-    if (bubbleLoaded) {
-        return;
-    }
 
   var diameter = 900;
   d3.select('#influencebubble').html("");
@@ -280,9 +281,9 @@ function createBubble(incomingData, bubbleLoaded) {
     var newDataSet = [];
 
     for(var personIndex in people) {
-      newDataSet.push({name: people[personIndex].name,
-                       className: people[personIndex].name,
-                       size: people[personIndex].count});
+      newDataSet.push({name: people[personIndex].Name,
+                       className: people[personIndex].Name,
+                       size: people[personIndex].Count});
     }
     return {children: newDataSet};
   }
@@ -307,15 +308,14 @@ function createBubble(incomingData, bubbleLoaded) {
 
         return [lat, lng];
     }
-    
+
     function storeLocationData(mapData) {
         var firstMapView = !loginLocations;
-        
+
         loginLocations = [];
         for (var i = 0; i < mapData.length; i++) {
             loginLocations.push(mapData[i]);
         }
-        
         refreshMarkers(firstMapView);
     }
 
@@ -338,23 +338,23 @@ function createBubble(incomingData, bubbleLoaded) {
         if (!this.markers) {
             return;
         }
-        
+
         if (loginLocations && loginLocations.length > 0) {
             this.markers.clearLayers();
-            
+
             var locs = [];
-            
+
             for (var i = 0; i < loginLocations.length; i++) {
                 var location = loginLocations[i].location;
                 var marker = L.marker(location);
-                marker.bindPopup('<img class="github-avatar" src="' + 
-                    loginLocations[i].avatar + '"/><br/><b>' + 
+                marker.bindPopup('<img class="github-avatar" src="' +
+                    loginLocations[i].avatar + '"/><br/><b>' +
                     loginLocations[i].login + "</b>");
                 markers.addLayer(marker);
-                
+
                 locs.push(location);
             }
-            
+
             var bounds = L.latLngBounds(locs).pad(0.2);
             if (firstView) {
                 this.map.fitBounds(bounds);
